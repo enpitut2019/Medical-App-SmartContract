@@ -30,11 +30,4 @@ contract Examination is Library{
         
         // 返金の処理などを書く
     }
-    
-    /** @dev 登録された医療費を返す
-      * @return uint256 医療費
-      */
-    function getMedicalCost() public view returns (uint256){
-        return medicalCost;
-    }
 }
