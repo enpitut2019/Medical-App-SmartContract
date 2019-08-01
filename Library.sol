@@ -1,33 +1,41 @@
 pragma solidity ^0.5.10;
 
-import "./Library.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 
-contract Examination is Library{
-    address hospitalAddress;
-    address patientAddress;
-    uint256 medicalCost;
-    
-    constructor (address _patientAddress) public {
-        hospitalAddress = msg.sender;
-        patientAddress = _patientAddress;
+contract Library{
+    function recoverAddress(string memory _message, bytes memory signature) internal pure returns (address) {
+        bytes memory prefix = "\x19Ethereum Signed Message:\n";
+        string memory length = uintToString(bytes(_message).length);
+        bytes32 prefixHash = keccak256(abi.encodePacked(prefix, length, _message));
+        address signer = ECDSA.recover(prefixHash, signature);
+        require(signer != address(0));
+        return signer;
     }
     
-    modifier onlyOwner() {
-        require(hospitalAddress == msg.sender);
-        _;
+    function uintToString(uint256 v) internal pure returns (string memory) {
+        uint maxlength = 100;
+        bytes memory reversed = new bytes(maxlength);
+        uint256 i = 0;
+        while (v != 0) {
+            uint256 remainder = v % 10;
+            v = v / 10;
+            reversed[i++] = bytes1(uint8(48 + remainder));
+        }
+        bytes memory s = new bytes(i);
+        for (uint256 j = 0; j < i; j++) {
+            s[j] = reversed[i - 1 - j];
+        }
+        return string(s);
     }
-    
-    /** @dev 医療費の登録
-      * @param _medicalCost 医療費 
-      * @param _signature 文字列に変換した医療費に対する患者の署名
-      */
-    function setMedicalCost(uint256 _medicalCost, bytes memory _signature) public onlyOwner{
-        // 署名が患者によって行われているか
-        string memory message = uintToString(_medicalCost);
-        require(recoverAddress(message, _signature) == patientAddress);
-        
-        medicalCost = _medicalCost;
-        
-        // 返金の処理などを書く
+}
+
+contract recoverAddressTest is Library{
+    address public signer;
+    // private key = 0x917852116674bceb21d8ddb19ab91671b7f17db021fb41539b8667a5b2d20ce2
+    // address = 0x2D031F7DF3DA1fBf86561cBD597e018c52BdCAad
+    // message = "Test Message"
+    // signature = 0x9dbbdb5eb6539960a0789fab7fe809e1c6bed8df01288cbc04579952f258b5b03b60827e502dad34acae927f2e07cf572ca94996f142689bdbd5c5c9bcc0f66e1b
+    constructor(string memory _message, bytes memory _signature) public{
+        signer  = recoverAddress(_message, _signature);
     }
 }
