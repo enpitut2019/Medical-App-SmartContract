@@ -1,7 +1,11 @@
 $(function () {
     $("button[name='size']").on("click", function (e) {
         e.preventDefault();
-        var source = Encoding.convert($('#value').val(), 'SJIS')
+        var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
+            + $('#work place').val() + ',' + $('#length of stay').val() + ',' + $('#medical insurance').val() + ','
+            + $('#method of paymnt').val() + ',' + $('#religious requests').val() + ',' + $('#emergency contact').val() + ',' +
+            $('#acquaintance').val() + ',' + $('#others').val() + ',';
+        source = Encoding.convert(source, 'SJIS');
 
         try {
             $('#qrcode').html("").qrcode({
@@ -13,4 +17,4 @@ $(function () {
             $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
         }
     })
-})
+});
