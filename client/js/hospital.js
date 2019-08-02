@@ -1,6 +1,7 @@
 const web3 = new Web3('wss://rinkeby.infura.io/ws/v3/cf93a80dccb7456d806de40695023f72');
 
 const HospitalContractInstance  = new web3.eth.Contract(HospitalContractABI, HospitalContractAddress);
+const ExaminationContractInstance = new web3.eth.Contract(ExaminationContractABI, ExaminationContractAddress);
 
 // ブラウザのローカルストレージから秘密鍵を読み込み
 const privateKey = localStorage.getItem('privateKey');
@@ -61,4 +62,19 @@ $('#medicalCostButton').click(function () {
     } catch (e) {
         $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
     }
-})
+});
+
+$('#setMedicalCostButton').click(function () {
+    console.log("start...");
+    let medicalCost = $('#setMedicalCostInput1').val();
+    let signature = $('#setMedicalCostInput2').val();
+    const encodedABI = ExaminationContractInstance.methods.setMedicalCost(medicalCost, signature).encodeABI();
+    // console.log(encodedABI);
+    (async function() {
+        let gasAmount = 4000000;//await ExaminationContractInstance.methods.setMedicalCost(medicalCost, signature).estimateGas();
+        console.log(gasAmount);
+        let signedtx = await web3.eth.accounts.signTransaction({to: ExaminationContractAddress, data: encodedABI, gas: gasAmount}, privateKey);
+        let receipt = await web3.eth.sendSignedTransaction(signedtx.rawTransaction);
+        console.log(receipt);
+    }());
+});
