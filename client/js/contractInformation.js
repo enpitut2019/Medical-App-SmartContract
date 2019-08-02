@@ -1,26 +1,16 @@
-const HospitalContractAddress = "0xdb253c66c8f7490b36928343284f9cfd9e6af0d4";
+const HospitalContractAddress = "0xb54d0e1bf75bb114f01e8d3d395156213debc7b9";
 
 const HospitalContractABI = [
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "testReturnAddress",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_patientAddress",
-				"type": "address"
+				"name": "_patientData",
+				"type": "string"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
 			}
 		],
 		"name": "startExamination",
@@ -71,13 +61,109 @@ const ExaminationContractABI = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [],
+		"name": "withDraw",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [],
-		"name": "getMedicalCost",
+		"name": "getPatientAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getPatientData",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "refund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "viewPatientData",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getPaymentStatus",
 		"outputs": [
 			{
 				"name": "",
 				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getTokenData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "symbol",
+						"type": "string"
+					},
+					{
+						"name": "decimals",
+						"type": "uint8"
+					}
+				],
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"payable": false,
@@ -105,7 +191,19 @@ const ExaminationContractABI = [
 	{
 		"inputs": [
 			{
-				"name": "_patientAddress",
+				"name": "_patientData",
+				"type": "string"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			},
+			{
+				"name": "_hospitalAddress",
+				"type": "address"
+			},
+			{
+				"name": "_tokenAddress",
 				"type": "address"
 			}
 		],
