@@ -41,6 +41,7 @@ $(function () {
             "acquaintance": $('#acquaintance').val(),
             "others": $('#others').val()
         };
+        //JSON化
         var jsonObj = JSON.stringify(obj, undefined, "\t");
 
         // 暗号化キー
@@ -50,13 +51,15 @@ $(function () {
         // 暗号化
         var encrypted = CryptoJS.AES.encrypt(utf8_plain, txt_key);
         var encrypted_strings = txt_key + "," + encrypted.toString();
-        console.log('encrypted_strings: ' + encrypted_strings);
 
+        //署名
+        const source = encrypted_strings + "," + sign(jsonObj);
+        console.log('source: ' + source);
         try {
             $('#qrcode').html("").qrcode({
                 width: 400,
                 height: 400,
-                text: encrypted_strings,
+                text: source,
             });
         } catch (e) {
             $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
