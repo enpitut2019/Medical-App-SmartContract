@@ -23,39 +23,46 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 	localStorage.setItem("contractAddress", event.returnValues.contractAddress);
 });
 
-//署名
-function sign(message){
-    let result = web3.eth.accounts.sign(message, privateKey);
-    return result.signature;
-}
-//--------------------------------------------------------------------------------------------------------------------------------
 
-$("button[name='size']").on("click", function (e) {
-    e.preventDefault();
-    var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
-        + $('#work place').val() + ',' + $('#length of stay').val() + ',' + $('#medical insurance').val() + ','
-        + $('#method of paymnt').val() + ',' + $('#religious requests').val() + ',' + $('#emergency contact').val() + ',' +
-        $('#acquaintance').val() + ',' + $('#others').val() + ',';
-    source = Encoding.convert(source, 'SJIS');
+$(function () {
+    $("button[name='size']").on("click", function (e) {
+        e.preventDefault();
+        const obj = {
+            "name": $('#name').val(),
+            "country": $('#country').val(),
+            "language": $('#language').val(),
+            "destination": $('#destination').val(),
+            "work place": $('#work_place').val(),
+            "length of stay": $('#length_of_stay').val(),
+            "medical insurance": $('#medical_insurance').val(),
+            "method of payment": $('#method_of_paymnt').val(),
+            "religious requests": $('#religious_requests').val(),
+            "emergency contact": $('#emergency_contact').val(),
+            "acquaintance": $('#acquaintance').val(),
+            "others": $('#others').val()
+        };
+        //JSON化
+        var jsonObj = JSON.stringify(obj, undefined, "\t");
 
-    try {
-        $('#qrcode').html("").qrcode({
-            width: 200,
-            height: 200,
-            text: source,
-        });
-    } catch (e) {
-        $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
-    }
-})
-$("#setMedicalCostButton").on("click", function (e) {
-    e.preventDefault();
-    var cost = $("#setMedicalCostInput").val();
-    cost_sign = sign(String(cost));
-    console.log(cost_sign);
-    $('#setMedicalCostQrcode').html("").qrcode({
-        width: 200,
-        height: 200,
-        text: cost_sign,
-    });
+        // 暗号化キー
+        var txt_key = "0123456789ABCDEF0123456789ABCDEF";
+        console.log('original_strngs: ' + jsonObj);
+        var utf8_plain = CryptoJS.enc.Utf8.parse(jsonObj);
+        // 暗号化
+        var encrypted = CryptoJS.AES.encrypt(utf8_plain, txt_key);
+        var encrypted_strings = txt_key + "," + encrypted.toString();
+
+        //署名
+        const source = encrypted_strings + "," + sign(jsonObj);
+        console.log('source: ' + source);
+        try {
+            $('#qrcode').html("").qrcode({
+                width: 400,
+                height: 400,
+                text: source,
+            });
+        } catch (e) {
+            $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
+        }
+    })
 });
