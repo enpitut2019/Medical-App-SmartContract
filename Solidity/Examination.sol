@@ -1,18 +1,26 @@
 pragma solidity ^0.5.10;
+pragma experimental ABIEncoderV2;
 
 import "./Library.sol";
 import "./UsingERC20.sol";
 
-contract Examination is Library, UsingERC20{
+contract Examination is UsingERC20, Library{
     address hospitalAddress;
     address patientAddress;
     uint256 medicalCost;
     uint256 unpaidCost;
     bool receiptCompleted;
-    
-    constructor (address _patientAddress) public {
+    string public patientData;
+
+    /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトを初期化
+      * @param _patientData 患者データを暗号化した物
+      * @param _signature _patientDataに対する患者の署名
+      * @param _tokenAddress 使用するERC20準拠Tokenのコントラクトアドレス
+      */
+    constructor(string memory _patientData, bytes memory _signature, address _tokenAddress) UsingERC20(_tokenAddress) public {
         hospitalAddress = msg.sender;
-        patientAddress = _patientAddress;
+        patientData = _patientData;
+        patientAddress = recoverAddress(_patientData, _signature);
     }
     
     modifier onlyOwner() {
@@ -23,6 +31,13 @@ contract Examination is Library, UsingERC20{
     /** @dev フォールバック関数(送金を受け付ける）
       */
     function () external{
+    }
+    
+    /** @dev 登録された患者データの取得
+        @return string 患者データ
+      */
+    function viewPatientData() public view returns (string memory){
+        return patientData;
     }
     
     /** @dev 医療費の登録
