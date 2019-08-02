@@ -23,7 +23,6 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 	localStorage.setItem("contractAddress", event.returnValues.contractAddress);
 });
 
-//--------------------------------------------------------------------------------------------------------------------------------
 
 $(function () {
     $("button[name='size']").on("click", function (e) {
@@ -43,13 +42,21 @@ $(function () {
             "others": $('#others').val()
         };
         var jsonObj = JSON.stringify(obj, undefined, "\t");
-        source = JSON.parse(jsonObj);
+
+        // 暗号化キー
+        var txt_key = "0123456789ABCDEF0123456789ABCDEF";
+        console.log('original_strngs: ' + jsonObj);
+        var utf8_plain = CryptoJS.enc.Utf8.parse(jsonObj);
+        // 暗号化
+        var encrypted = CryptoJS.AES.encrypt(utf8_plain, txt_key);
+        var encrypted_strings = txt_key + "," + encrypted.toString();
+        console.log('encrypted_strings: ' + encrypted_strings);
 
         try {
             $('#qrcode').html("").qrcode({
-                width: 200,
-                height: 200,
-                text: source,
+                width: 400,
+                height: 400,
+                text: encrypted_strings,
             });
         } catch (e) {
             $('#qrcode').html("").append("文字数オーバーです：<br>" + e);

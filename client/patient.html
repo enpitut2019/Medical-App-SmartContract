@@ -19,8 +19,9 @@
 <!--10）緊急連絡先-->
 <!--11）宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合 -->
 <div class="row" style="padding:1em">
-    <form>
-        <p>名前（アルファベット表記）:<br>
+    <p>
+        <form>
+    <p>名前（アルファベット表記）:<br>
             <input id="name"></p>
         <p>国籍 :<br>
             <select id="country" name="country">
@@ -287,9 +288,9 @@
             <input id="method_of_paymnt"></p>
         <p>宗教上の要望 :<br>
             <input id="religious_requests"></p>
-        <p>宗教上の要望 :<br>
+    <p>緊急連絡先 :<br>
             <input id="emergency_contact"></p>
-        <p>宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合 :<br>
+        <p>宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合）:<br>
             <input id="acquaintance"></p>
 
         <div>
@@ -304,6 +305,7 @@
             </div>
         </div>
     </form>
+    </p>
     <div id="qrcode"></div>
 </div>
 
@@ -311,6 +313,7 @@
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="js/aes.js"></script>
 <script src="js/encoding.min.js"></script>
 <script src="js/contractInformation.js"></script>
 <script src="js/patient.js"></script>
