@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/form.css">
+    <link rel="stylesheet" type="text/css" href="css/text.css">
 </head>
 <body>
 <h1>Hello patient!</h1>
@@ -18,12 +20,14 @@
 <!--９）宗教上の要望-->
 <!--10）緊急連絡先-->
 <!--11）宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合 -->
-<div class="row" style="padding:1em">
-    <p>
-        <form>
-    <p>名前（アルファベット表記）:<br>
-            <input id="name"></p>
-        <p>国籍 :<br>
+
+<form>
+    <div class="msr_text_02">
+        <label>名前（アルファベット表記）:</label>
+        <input type="text" id="name">
+    </div>
+    <div class="msr_pulldown_02">
+        <label>国籍 :</label>
             <select id="country" name="country">
                 <option value="">Country...</option>
                 <option value="Afganistan">Afghanistan</option>
@@ -273,46 +277,93 @@
                 <option value="Zaire">Zaire</option>
                 <option value="Zambia">Zambia</option>
                 <option value="Zimbabwe">Zimbabwe</option>
-            </select></p>
-        <p>母語および母語以外に対応可能な言語 :<br>
-            <input id="language"></p>
-        <p>日本での住所と連絡先（在留外国人患者）／滞在先（訪日外国人旅行者患者）:<br>
-            <input id="destination"></p>
-        <p>勤務先:<br>
-            <input id="work_place"></p>
-        <p>日本での滞在期間（訪日外国人旅行者の場合）:<br>
-            <input id="length_of_stay"></p>
-        <p>医療保険加入の有無（公的および民間）:<br>
-            <input id="medical_insurance"></p>
-        <p>医療費の支払い方法 :<br>
-            <input id="method_of_paymnt"></p>
-        <p>宗教上の要望 :<br>
-            <input id="religious_requests"></p>
-    <p>緊急連絡先 :<br>
-            <input id="emergency_contact"></p>
-        <p>宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合）:<br>
-            <input id="acquaintance"></p>
+            </select>
+    </div>
+    <div class="msr_text_02">
+        <label>母語および母語以外に対応可能な言語 :</label>
+        <input type="text" id="language">
+    </div>
+    <div class="msr_text_02">
+        <label>日本での住所と連絡先（在留外国人患者）／滞在先（訪日外国人旅行者患者）:</label>
+        <input type="text" id="destination">
+    </div>
+    <div class="msr_text_02">
+        <label>勤務先:</label>
+        <input type="text" id="work_place">
+    </div>
+    <div class="msr_pulldown_02">
+        日本での滞在期間（訪日外国人旅行者の場合）:
+        <select id="length_of_stay" name="length of stay">
+            <option value="">n day...</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+    <div class="msr_radio_02">
+        <p>医療保険加入の有無（公的および民間）:</p>
 
-        <div>
-            <label>その他備考</label>
-            <div>
-                <textarea type="text" id="others" style="width:90%;height:2vh"></textarea>
-            </div>
-        </div>
-        <div>
-            <div class="btn-group">
-                <button class="btn" name="size">生成</button>
-            </div>
+        <input type="radio" name="msr_radio_tye01" id="medical_insurance_yes"/>
+        <label for="medical_insurance_yes">YES</label>
+        <input type="radio" name="msr_radio_tye01" id="medical_insurance_no"/>
+        <label for="medical_insurance_no">NO</label>
+
+    </div>
+
+    <div class="msr_text_02">
+        <label>医療費の支払い方法 :</label>
+        <input type="text" id="method_of_paymnt">
+    </div>
+    <div class="msr_text_02">
+        <label>宗教上の要望 :</label>
+        <input type="text" id="religious_requests">
+    </div>
+    <div class="msr_text_02">
+        <label>緊急連絡先 :</label>
+        <input type="text" id="emergency_contact">
+    </div>
+    <div class="msr_text_02">
+        <label>宿泊事業者や知人等、付添者の連絡先（訪日外国人旅行者患者の場合）:</label>
+        <input type="text" id="acquaintance">
+    </div>
+
+    <div class="msr_textarea_02">
+        <label>その他備考</label>
+        <textarea type="text" id="others"></textarea>
+    </div>
+
+    <div>
+            <p>
+                <button class="msr_sendbtn_02" type="submit" name="size">生成</button>
+            </p>
         </div>
     </form>
-    </p>
-    <div id="qrcode"></div>
+
+<p>
+<div id="qrcode"></div>
+</p>
+<h1></h1>
+<div class="msr_text_02">
+    <label>医療費を入力</label>
+    <input type="text" id="setMedicalCostInput">
 </div>
-<div>
-    <input id="setMedicalCostInput">
-    <button id="setMedicalCostButton">setMedicalCostButton</button>
+
+<div class="btn-group">
+    <button class="msr_sendbtn_02" type="submit" id="setMedicalCostButton">支払う</button>
+</div>
     <div id="setMedicalCostQrcode"></div>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
