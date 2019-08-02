@@ -5,15 +5,20 @@ import "./Examination.sol";
 
 contract Hospital{
     
+    event StartExamination(address contractAddress, address hospitalAddress, address patientAddress);
+    
     mapping (address => Examination[]) examinationList;
     
-    /** @dev Š³ŽÒ‚²‚Æ‚ÌƒXƒ}[ƒgƒRƒ“ƒgƒ‰ƒNƒg‚ðƒfƒvƒƒC
-      * @param _patientAddress Š³ŽÒ‚ÌƒAƒhƒŒƒX
-      * @returns address ƒXƒ}[ƒgƒRƒ“ƒgƒ‰ƒNƒg‚ÌƒAƒhƒŒƒX
+    /** @dev æ‚£è€…ã”ã¨ã®ã‚¹ãƒžãƒ¼ãƒˆã‚³ãƒ³ãƒˆãƒ©ã‚¯ãƒˆã‚’ãƒ‡ãƒ—ãƒ­ã‚¤
+      * @param _patientAddress æ‚£è€…ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
       */
-    function startExamination(address _patientAddress) public returns (address){
+    function startExamination(address _patientAddress) public{
         Examination tmp = new Examination(_patientAddress);
         examinationList[msg.sender].push(tmp);
-        return address(tmp);
+        emit StartExamination(address(tmp), msg.sender, _patientAddress);
+    }
+    
+    function testReturnAddress() public view returns(address){
+        return msg.sender;
     }
 }

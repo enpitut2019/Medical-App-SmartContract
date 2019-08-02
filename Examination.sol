@@ -17,6 +17,11 @@ contract Examination is Library{
         _;
     }
     
+    /** @dev フォールバック関数(コントラクトのアドレス宛の送金を受け付けるため）
+      */
+    function () external{
+    }
+    
     /** @dev 医療費の登録
       * @param _medicalCost 医療費 
       * @param _signature 文字列に変換した医療費に対する患者の署名
@@ -36,5 +41,11 @@ contract Examination is Library{
       */
     function getMedicalCost() public view returns (uint256){
         return medicalCost;
+    }
+    
+    /** @dev コントラクトに保存された患者アドレスが、正しいかチェックする
+      */
+    function validatePatientAddress() public view returns (bool){
+        return patientAddress == msg.sender;
     }
 }
