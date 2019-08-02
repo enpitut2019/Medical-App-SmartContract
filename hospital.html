@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <h1>Test</h1>
-        <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
-        <script src="./template.js"></script>
-        <input>
-    </body>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<p>
+    患者のアドレスを入力、将来的にはここで特記事項
+    <input type="text" id="patientAddress">
+    <button id="deployButton">契約の開始</button>
+</p>
+
+<p>
+<div class="medical_bills">医療費</div>
+<input id="medicalBillsInput">
+<button id="medicalBillsButton">button</button>
+<p id="medical_bills_p"></p>
+</p>
+<div id="qrcode"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+<script src="./contractInformation.js"></script>
+<script src="./hospital.js"></script>
+<script src="js/encoding.min.js"></script>
+<script type="text/javascript" src="./js/jquery.qrcode.min.js"></script>
+</body>
 </html>
