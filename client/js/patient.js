@@ -23,25 +23,39 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 	localStorage.setItem("contractAddress", event.returnValues.contractAddress);
 });
 
+//署名
+function sign(message){
+    let result = web3.eth.accounts.sign(message, privateKey);
+    return result.signature;
+}
 //--------------------------------------------------------------------------------------------------------------------------------
 
-$(function () {
-    $("button[name='size']").on("click", function (e) {
-        e.preventDefault();
-        var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
-            + $('#work place').val() + ',' + $('#length of stay').val() + ',' + $('#medical insurance').val() + ','
-            + $('#method of paymnt').val() + ',' + $('#religious requests').val() + ',' + $('#emergency contact').val() + ',' +
-            $('#acquaintance').val() + ',' + $('#others').val() + ',';
-        source = Encoding.convert(source, 'SJIS');
+$("button[name='size']").on("click", function (e) {
+    e.preventDefault();
+    var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
+        + $('#work place').val() + ',' + $('#length of stay').val() + ',' + $('#medical insurance').val() + ','
+        + $('#method of paymnt').val() + ',' + $('#religious requests').val() + ',' + $('#emergency contact').val() + ',' +
+        $('#acquaintance').val() + ',' + $('#others').val() + ',';
+    source = Encoding.convert(source, 'SJIS');
 
-        try {
-            $('#qrcode').html("").qrcode({
-                width: 200,
-                height: 200,
-                text: source,
-            });
-        } catch (e) {
-            $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
-        }
-    })
+    try {
+        $('#qrcode').html("").qrcode({
+            width: 200,
+            height: 200,
+            text: source,
+        });
+    } catch (e) {
+        $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
+    }
+})
+$("#setMedicalCostButton").on("click", function (e) {
+    e.preventDefault();
+    var cost = $("#setMedicalCostInput").val();
+    cost_sign = sign(String(cost));
+    console.log(cost_sign);
+    $('#setMedicalCostQrcode').html("").qrcode({
+        width: 200,
+        height: 200,
+        text: cost_sign,
+    });
 });
