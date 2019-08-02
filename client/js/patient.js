@@ -23,22 +23,40 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 	localStorage.setItem("contractAddress", event.returnValues.contractAddress);
 });
 
-//--------------------------------------------------------------------------------------------------------------------------------
 
 $(function () {
     $("button[name='size']").on("click", function (e) {
         e.preventDefault();
-        var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
-            + $('#work place').val() + ',' + $('#length of stay').val() + ',' + $('#medical insurance').val() + ','
-            + $('#method of paymnt').val() + ',' + $('#religious requests').val() + ',' + $('#emergency contact').val() + ',' +
-            $('#acquaintance').val() + ',' + $('#others').val() + ',';
-        source = Encoding.convert(source, 'SJIS');
+        const obj = {
+            "name": $('#name').val(),
+            "country": $('#country').val(),
+            "language": $('#language').val(),
+            "destination": $('#destination').val(),
+            "work place": $('#work_place').val(),
+            "length of stay": $('#length_of_stay').val(),
+            "medical insurance": $('#medical_insurance').val(),
+            "method of payment": $('#method_of_paymnt').val(),
+            "religious requests": $('#religious_requests').val(),
+            "emergency contact": $('#emergency_contact').val(),
+            "acquaintance": $('#acquaintance').val(),
+            "others": $('#others').val()
+        };
+        var jsonObj = JSON.stringify(obj, undefined, "\t");
+
+        // 暗号化キー
+        var txt_key = "0123456789ABCDEF0123456789ABCDEF";
+        console.log('original_strngs: ' + jsonObj);
+        var utf8_plain = CryptoJS.enc.Utf8.parse(jsonObj);
+        // 暗号化
+        var encrypted = CryptoJS.AES.encrypt(utf8_plain, txt_key);
+        var encrypted_strings = txt_key + "," + encrypted.toString();
+        console.log('encrypted_strings: ' + encrypted_strings);
 
         try {
             $('#qrcode').html("").qrcode({
-                width: 200,
-                height: 200,
-                text: source,
+                width: 400,
+                height: 400,
+                text: encrypted_strings,
             });
         } catch (e) {
             $('#qrcode').html("").append("文字数オーバーです：<br>" + e);
