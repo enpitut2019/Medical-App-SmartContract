@@ -24,7 +24,7 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 });
 
 
-$(function () {
+$(function makeQR() {
     $("button[name='size']").on("click", function (e) {
         e.preventDefault();
         const obj = {
