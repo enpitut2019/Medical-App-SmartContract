@@ -6,19 +6,18 @@ import "./Examination.sol";
 contract Hospital{
     
     event StartExamination(address contractAddress, address hospitalAddress, address patientAddress);
-    
     mapping (address => Examination[]) examinationList;
     
-    /** @dev 患者ごとのスマートコントラクトをデプロイ
-      * @param _patientAddress 患者のアドレス
-      */
-    function startExamination(address _patientAddress) public{
-        Examination tmp = new Examination(_patientAddress);
-        examinationList[msg.sender].push(tmp);
-        emit StartExamination(address(tmp), msg.sender, _patientAddress);
-    }
+    address tokenAddress = 0x4369eEFc59a1841fC932AcFD9f2c152593Ac5283;
     
-    function testReturnAddress() public view returns(address){
-        return msg.sender;
+    
+    /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトをデプロイ
+      * @param _patientData 患者データを暗号化した物
+      * @param _signature _patientDataに対する患者の署名
+      */
+    function startExamination(string memory _patientData, bytes memory _signature) public{
+        Examination tmp = new Examination(_patientData, _signature, msg.sender, tokenAddress);
+        examinationList[msg.sender].push(tmp);
+        emit StartExamination(address(tmp), msg.sender, tmp.getPatientAddress());
     }
 }
