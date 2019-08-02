@@ -5,20 +5,21 @@ import "./Library.sol";
 import "./UsingERC20.sol";
 
 contract Examination is UsingERC20, Library{
-    address hospitalAddress;
-    address patientAddress;
+    address private hospitalAddress;
+    address private patientAddress;
     uint256 medicalCost;
     uint256 unpaidCost;
     bool receiptCompleted;
-    string public patientData;
+    string patientData;
 
     /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトを初期化
       * @param _patientData 患者データを暗号化した物
       * @param _signature _patientDataに対する患者の署名
+      * @param _hospitalAddress 病院のアドレス
       * @param _tokenAddress 使用するERC20準拠Tokenのコントラクトアドレス
       */
-    constructor(string memory _patientData, bytes memory _signature, address _tokenAddress) UsingERC20(_tokenAddress) public {
-        hospitalAddress = msg.sender;
+    constructor(string memory _patientData, bytes memory _signature, address _hospitalAddress, address _tokenAddress) UsingERC20(_tokenAddress) public {
+        hospitalAddress = _hospitalAddress;
         patientData = _patientData;
         patientAddress = recoverAddress(_patientData, _signature);
     }
@@ -26,6 +27,14 @@ contract Examination is UsingERC20, Library{
     modifier onlyOwner() {
         require(hospitalAddress == msg.sender);
         _;
+    }
+    
+    function getPatientAddress() public view returns(address){
+        return patientAddress;
+    }
+
+    function getPatientData() public view returns(string memory){
+        return patientData;
     }
     
     /** @dev フォールバック関数(送金を受け付ける）
