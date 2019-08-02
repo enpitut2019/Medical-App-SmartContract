@@ -56,6 +56,7 @@ contract Examination is Library, UsingERC20{
         }else{
             ERC20Token.transfer(hospitalAddress, unpaidCost);
             unpaidCost = 0;
+            // 余った分は返金
             refund();
         }
     }
