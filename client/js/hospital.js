@@ -7,7 +7,7 @@ const privateKey = localStorage.getItem('privateKey');
 
 if(privateKey == null){
     alert("Please Input Your Private Key");
-    location.href = './common.html';
+    location.href = '../common.html';
 }
 
 // 秘密鍵 => アドレス
