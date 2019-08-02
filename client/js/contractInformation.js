@@ -53,8 +53,6 @@ const HospitalContractABI = [
 	}
 ];
 
-const ExaminationContractAddress = "0x129482032297B59D9d0B7Cfe16e672460F829E9f";
-
 const ExaminationContractABI = [
 	{
 		"constant": true,
