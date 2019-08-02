@@ -28,11 +28,22 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 $(function () {
     $("button[name='size']").on("click", function (e) {
         e.preventDefault();
-        var source = $('#name').val() + ',' + $('#country').val() + ',' + $('#language').val() + ',' + $('#destination').val() + ','
-            + $('#work_place').val() + ',' + $('#length_of_stay').val() + ',' + $('#medical_insurance').val() + ','
-            + $('#method_of_paymnt').val() + ',' + $('#religious_requests').val() + ',' + $('#emergency_contact').val() + ',' +
-            $('#acquaintance').val() + ',' + $('#others').val() + ',';
-        source = Encoding.convert(source, 'SJIS');
+        const obj = {
+            "name": $('#name').val(),
+            "country": $('#country').val(),
+            "language": $('#language').val(),
+            "destination": $('#destination').val(),
+            "work place": $('#work_place').val(),
+            "length of stay": $('#length_of_stay').val(),
+            "medical insurance": $('#medical_insurance').val(),
+            "method of payment": $('#method_of_paymnt').val(),
+            "religious requests": $('#religious_requests').val(),
+            "emergency contact": $('#emergency_contact').val(),
+            "acquaintance": $('#acquaintance').val(),
+            "others": $('#others').val()
+        };
+        var jsonObj = JSON.stringify(obj, undefined, "\t");
+        source = JSON.parse(jsonObj);
 
         try {
             $('#qrcode').html("").qrcode({
