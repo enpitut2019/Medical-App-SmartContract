@@ -79,3 +79,24 @@ $('#setMedicalCostButton').click(function () {
         console.log(receipt);
     }());
 });
+
+
+function decription() {
+    //sourceはQRコードから読み取ったstring
+    const source = "0123456789ABCDEF0123456789ABCDEF,U2FsdGVkX193yGXl7eiptNXrX1TSLpv/haG2yjBBDyFlphJ0CZtyps2uhE6l+5TYfrpPlyDuHHAVuuW08XArmlO7czuPOsUS9TxgIc07UozlmHzcc9sKNpUQFsA1Hjil5WEqCKN7xfJov303kz4rH6+fLuZcBJyIrjVzBdX0Gh9AkElZSTHP3lWK9LKlLSKsUv+6LZPP/sZ7IrtSNVtN49g/BvtyEz4BsnI47dSwkqEi83dyNXxEl5s6+Wt7pnytq8ODb1ub/q9RQpYneVam7VaJReGDK82ury4hswl6GhWvNm+VbXUpdbhotg6Ub6jXlyU2uQ0Am1cwm9wGnfXhG14SE35czODhMJCLGokBq00hXNov8yajkoTOJX0cUTkvIK1QI5DaFHnYUPH58jz5+pIGo/fBrtkXzU958B90clk=,0xdd6bb20b9e7881037e855333a7e420644cf05c4a665255fc5f9e744d82b37f9a671ece5b61d839d09d90b15ceef30ea17a59cb9094e3f2881eae5b7b82643f631b";
+
+    const sourceArray = source.split(',');
+    const key = sourceArray[0];
+    const crypto = sourceArray[1];
+    const sign = sourceArray[2];
+
+    // 復号化
+    var decrypted = CryptoJS.AES.decrypt(crypto, key);
+    var decrypted_strings = decrypted.toString(CryptoJS.enc.Utf8);
+    console.log('decrypted_strings: ' + decrypted_strings);
+    console.log('sign: ' + sign);
+
+    //json形式化
+    const patientInfo = JSON.parse(decrypted_strings);
+    console.log(patientInfo);
+}
