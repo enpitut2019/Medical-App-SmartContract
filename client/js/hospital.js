@@ -1,7 +1,7 @@
 const web3 = new Web3('wss://rinkeby.infura.io/ws/v3/cf93a80dccb7456d806de40695023f72');
 
 const HospitalContractInstance  = new web3.eth.Contract(HospitalContractABI, HospitalContractAddress);
-const ExaminationContractInstance = new web3.eth.Contract(ExaminationContractABI, ExaminationContractAddress);
+const ExaminationContractInstance = new web3.eth.Contract(ExaminationContractABI);
 
 // ブラウザのローカルストレージから秘密鍵を読み込み
 const privateKey = localStorage.getItem('privateKey');
@@ -14,14 +14,15 @@ if(privateKey == null){
 // 秘密鍵 => アドレス
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 
-
 // イベントのキャッチ設定
 HospitalContractInstance.events.StartExamination({}, function(error, event){
 	console.log(event);
 	if(event.returnValues.hospitalAddress == account.address){
 	    $('#contractAddress').text("Examination Contract Address : "+event.returnValues.contractAddress);
 	}
-	localStorage.setItem("contractAddress", event.returnValues.contractAddress);
+    localStorage.setItem("contractAddress", event.returnValues.contractAddress);
+    ExaminationContractInstance.options.address = event.returnValues.contractAddress;
+    console.log(ExaminationContractInstance);
 });
 
 // --------------------------------------------------------------------------------------------------------------------------
