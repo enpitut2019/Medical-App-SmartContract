@@ -66,3 +66,15 @@ $(function () {
         }
     })
 });
+
+$("#setMedicalCostButton").on("click", function (e) {
+    e.preventDefault();
+    var cost = $("#setMedicalCostInput").val();
+    cost_sign = sign(String(cost));
+    console.log(cost_sign);
+    $('#setMedicalCostQrcode').html("").qrcode({
+        width: 200,
+        height: 200,
+        text: cost_sign,
+    });
+});
