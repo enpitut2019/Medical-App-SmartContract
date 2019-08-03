@@ -6,12 +6,25 @@
 	<link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
 	<script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+	<style>
+		.selectable {
+			-ms-user-select: text;
+			-moz-user-select: text;
+			-khtml-user-select: text;
+			-webkit-user-select: text;
+			user-select: text;
+		}
+	</style>
 </head>
 <body>
 	<div>
 		<p>患者のアドレスを入力、将来的にはQRコードで特記事項、アドレス、署名をスキャン→デプロイ</p>
-		<p id="contractAddress">Examination Contract Address : </p> <input type="text" id="patientAddress">
-		<button id="deployButton">契約の開始</button>
+		<p id="contractAddress">Examination Contract Address : </p>
+		<p>テスト用</p>
+		<p class="selectable">patientData = helloworld<br> const signature = 0x94ea6975705ac3569450944b3f5decad5c62b5ddee8b5bfbcb2e7d3be15a3d4f6557155d041ef1f015d648590d896b60fe6e52d65d480b86cf64fb132342187b1b</p>
+		<input type="text" id="patientData" placeholder="patientData">
+		<input type="text" id="patientSigunature" placeholder="patientSignature">
+		<button id="deployButton">スマートコントラクトのデプロイ</button>
 		<br><br>
 		</div>
 	<div>
