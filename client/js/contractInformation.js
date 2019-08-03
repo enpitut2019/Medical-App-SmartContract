@@ -1,4 +1,4 @@
-const HospitalContractAddress = "0xb54d0e1bf75bb114f01e8d3d395156213debc7b9";
+const HospitalContractAddress = "0x860c9e2448a0760647c624e7610957af8ec37326"; //"0xaa9F19c68742247F693Fba531Bf0E31d92B37477";
 
 const HospitalContractABI = [
 	{
@@ -40,6 +40,32 @@ const HospitalContractABI = [
 		],
 		"name": "StartExamination",
 		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "signature",
+				"type": "bytes"
+			}
+		],
+		"name": "Test",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "input",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ];
 

@@ -31,13 +31,16 @@ HospitalContractInstance.events.StartExamination({}, function(error, event){
 // deployButtonがクリックされたら実行
 $('#deployButton').click(function() {
 	console.log("start...");
-	const patientAddress = String($('#patientAddress').val());
+    const patientData = $("#patientData").val();
+    const signature = $("#patientSigunature").val();
+	console.log("sign address : " + web3.eth.accounts.recover(patientData, signature));
 	// トランザクションのデータ部にくっつけるバイトコードを生成
-    const encodedABI = HospitalContractInstance.methods.startExamination(patientAddress).encodeABI();
+    const encodedABI = HospitalContractInstance.methods.startExamination(patientData,signature).encodeABI();
     // async即時関数でweb3を使う(綺麗に書ける)
     (async function(){
         // gasの使用量を計算
-        let gasAmount = await HospitalContractInstance.methods.startExamination(patientAddress).estimateGas();
+        let gasAmount = await HospitalContractInstance.methods.startExamination(patientData,signature).estimateGas();
+        gasAmount = gasAmount + 500000;
         // トランザクションにローカルの秘密鍵で署名
         let signedtx = await web3.eth.accounts.signTransaction({to: HospitalContractAddress, data: encodedABI, gas: gasAmount}, privateKey);
         // 署名済みトランザクションを送信
