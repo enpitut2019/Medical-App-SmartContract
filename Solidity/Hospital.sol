@@ -6,18 +6,29 @@ import "./Examination.sol";
 contract Hospital{
     
     event StartExamination(address contractAddress, address hospitalAddress, address patientAddress);
-    mapping (address => Examination[]) examinationList;
+    address tokenAddress = 0x0abcd3eE0378B6BB406cFa8Ea4521E7B03b89713; // TestUSD
     
-    address tokenAddress = 0x4369eEFc59a1841fC932AcFD9f2c152593Ac5283;
-    
+    mapping (address => ExaminationInfo[]) examinationList;
+    // これ後で消す
+    mapping (string => bool) isRegistered;
+    struct ExaminationInfo{
+        string passportNo;
+        Examination examinationContract;
+        uint256 start;
+    }
     
     /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトをデプロイ
       * @param _patientData 患者データを暗号化した物
       * @param _signature _patientDataに対する患者の署名
+      * @param _patientPassPhrase 患者の暗号鍵をさらに病院の暗号鍵で暗号化したもの
       */
-    function startExamination(string memory _patientData, bytes memory _signature) public{
-        Examination tmp = new Examination(_patientData, _signature, msg.sender, tokenAddress);
-        examinationList[msg.sender].push(tmp);
+    function startExamination(string memory _passportNo, string memory _patientData, bytes memory _signature, string memory _patientPassPhrase) public{
+        Examination tmp = new Examination(_patientData, _signature, _patientPassPhrase, msg.sender, tokenAddress);
+        examinationList[msg.sender].push(ExaminationInfo(_passportNo, tmp, now));
         emit StartExamination(address(tmp), msg.sender, tmp.getPatientAddress());
+    }
+    
+    function getExaminationList() public view returns(ExaminationInfo[] memory){
+        return examinationList[msg.sender];
     }
 }

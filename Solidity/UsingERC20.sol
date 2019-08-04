@@ -29,8 +29,8 @@ contract UsingERC20{
 
 contract TestERC20Token is ERC20, ERC20Detailed{
 
-    string private _name = "TestERC20Token5";
-    string private _symbol = "TTKN";
+    string private _name = "TestUSD";
+    string private _symbol = "TUSD";
     uint8 private _decimals = 18;
 
     // 10000.0000...
@@ -38,5 +38,9 @@ contract TestERC20Token is ERC20, ERC20Detailed{
 
     constructor() ERC20Detailed( _name, _symbol, _decimals) public {
         _mint( msg.sender, value);
+    }
+    
+    function getToken() public {
+        _mint(msg.sender, value);
     }
 }
