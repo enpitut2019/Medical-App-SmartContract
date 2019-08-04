@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+</head>
+<body>
+	<div>
+        <h1>TestUSDの配布</h1>
+        <p>アクセスした段階でlocalstorageに保存されていた秘密鍵のアドレスに10000TUSD送金</p>
+        <p>TUSDのアドレス : 0x0abcd3ee0378b6bb406cfa8ea4521e7b03b89713 (Metamask等にインポートして確認）</p>
+        <p>要 RinkebyETH</p>
+	</div>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+<script>
+const web3 = new Web3('wss://rinkeby.infura.io/ws/v3/cf93a80dccb7456d806de40695023f72');
+let erc20TokenContractAddress = "0x0abcd3ee0378b6bb406cfa8ea4521e7b03b89713";
+let erc20TokenContractABI = [{"constant": true,"inputs": [],"name": "name","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "spender","type": "address"},{"name": "value","type": "uint256"}],"name": "approve","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "totalSupply","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [],"name": "getToken","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "sender","type": "address"},{"name": "recipient","type": "address"},{"name": "amount","type": "uint256"}],"name": "transferFrom","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "decimals","outputs": [{"name": "","type": "uint8"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "spender","type": "address"},{"name": "addedValue","type": "uint256"}],"name": "increaseAllowance","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "account","type": "address"}],"name": "balanceOf","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": true,"inputs": [],"name": "symbol","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "spender","type": "address"},{"name": "subtractedValue","type": "uint256"}],"name": "decreaseAllowance","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": false,"inputs": [{"name": "recipient","type": "address"},{"name": "amount","type": "uint256"}],"name": "transfer","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "owner","type": "address"},{"name": "spender","type": "address"}],"name": "allowance","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function"},{"inputs": [],"payable": false,"stateMutability": "nonpayable","type": "constructor"},{"anonymous": false,"inputs": [{"indexed": true,"name": "from","type": "address"},{"indexed": true,"name": "to","type": "address"},{"indexed": false,"name": "value","type": "uint256"}],"name": "Transfer","type": "event"},{"anonymous": false,"inputs": [{"indexed": true,"name": "owner","type": "address"},{"indexed": true,"name": "spender","type": "address"},{"indexed": false,"name": "value","type": "uint256"}],"name": "Approval","type": "event"}];
+const erc20TokenContractInstance  = new web3.eth.Contract(erc20TokenContractABI, erc20TokenContractAddress);
+
+// ブラウザのローカルストレージから秘密鍵を読み込み
+const privateKey = localStorage.getItem('privateKey');
+$("div").append("<p>privateKey : " + privateKey +"</p>");
+if(privateKey == null){
+    alert("Please Input Your Private Key");
+    location.href = './common.html';
+}
+// 秘密鍵 => アドレス
+const address = web3.eth.accounts.privateKeyToAccount(privateKey).address;
+$("div").append("<p>address : " + address +"</p>");
+
+const encodedABI = erc20TokenContractInstance.methods.getToken().encodeABI();
+(async function(){
+    let signedtx = await web3.eth.accounts.signTransaction({to: erc20TokenContractAddress, data: encodedABI, gas: 50000}, privateKey);
+    let receipt = await web3.eth.sendSignedTransaction(signedtx.rawTransaction);
+    console.log(receipt);
+}());
+</script>
+</body>
+</html>
