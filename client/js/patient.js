@@ -54,7 +54,7 @@ $(function makeQR() {
         var encrypted_strings = txt_key + "," + encrypted.toString();
 
         //署名
-        const source = encrypted_strings + "," + sign(jsonObj);
+        const source = encrypted_strings + "," + sign(encrypted.toString());
         console.log('source: ' + source);
         try {
             $('#qrcode').html("").qrcode({
