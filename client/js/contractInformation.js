@@ -1,34 +1,6 @@
-const HospitalContractAddress = "0x6048b8d0c9429607254f32638263c71393a63c6d"; 
+const HospitalContractAddress = "0xf1fbe5b307609efad9d86dc1d8b1e1d2fc654a74s"; 
 
 const HospitalContractABI = [
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getExaminationList",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "passportNo",
-						"type": "string"
-					},
-					{
-						"name": "examinationContract",
-						"type": "address"
-					},
-					{
-						"name": "start",
-						"type": "uint256"
-					}
-				],
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"constant": false,
 		"inputs": [
@@ -76,24 +48,38 @@ const HospitalContractABI = [
 		],
 		"name": "StartExamination",
 		"type": "event"
-	}
-];
-
-const ExaminationContractABI = [
+	},
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "validatePatientAddress",
+		"name": "getExaminationList",
 		"outputs": [
 			{
+				"components": [
+					{
+						"name": "passportNo",
+						"type": "string"
+					},
+					{
+						"name": "examinationContract",
+						"type": "address"
+					},
+					{
+						"name": "start",
+						"type": "uint256"
+					}
+				],
 				"name": "",
-				"type": "bool"
+				"type": "tuple[]"
 			}
 		],
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
+	}
+];
+
+const ExaminationContractABI = [
 	{
 		"constant": false,
 		"inputs": [],
