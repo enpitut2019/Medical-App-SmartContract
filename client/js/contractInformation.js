@@ -1,9 +1,13 @@
-const HospitalContractAddress = "0x860c9e2448a0760647c624e7610957af8ec37326"; //"0xaa9F19c68742247F693Fba531Bf0E31d92B37477";
+const HospitalContractAddress = "0xd2b37179213b841df976045f979da12ecdb73ab0"; 
 
 const HospitalContractABI = [
 	{
 		"constant": false,
 		"inputs": [
+			{
+				"name": "_passportNo",
+				"type": "string"
+			},
 			{
 				"name": "_patientData",
 				"type": "string"
@@ -11,6 +15,10 @@ const HospitalContractABI = [
 			{
 				"name": "_signature",
 				"type": "bytes"
+			},
+			{
+				"name": "_patientPassPhrase",
+				"type": "string"
 			}
 		],
 		"name": "startExamination",
@@ -42,25 +50,27 @@ const HospitalContractABI = [
 		"type": "event"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "signature",
-				"type": "bytes"
-			}
-		],
-		"name": "Test",
-		"type": "event"
-	},
-	{
 		"constant": true,
 		"inputs": [],
-		"name": "input",
+		"name": "getExaminationList",
 		"outputs": [
 			{
+				"components": [
+					{
+						"name": "passportNo",
+						"type": "string"
+					},
+					{
+						"name": "examinationContract",
+						"type": "address"
+					},
+					{
+						"name": "start",
+						"type": "uint256"
+					}
+				],
 				"name": "",
-				"type": "bytes"
+				"type": "tuple[]"
 			}
 		],
 		"payable": false,
@@ -108,17 +118,17 @@ const ExaminationContractABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getPatientData",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
-				"type": "string"
+				"name": "_medicalCost",
+				"type": "uint256"
 			}
 		],
+		"name": "setMedicalCost",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -131,27 +141,35 @@ const ExaminationContractABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "viewPatientData",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
-				"type": "string"
+				"name": "_signature",
+				"type": "bytes"
 			}
 		],
+		"name": "signMedicalCost",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "getPaymentStatus",
+		"name": "getContractData",
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint256"
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
 			},
 			{
 				"name": "",
@@ -160,6 +178,36 @@ const ExaminationContractABI = [
 			{
 				"name": "",
 				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "symbol",
+						"type": "string"
+					},
+					{
+						"name": "decimals",
+						"type": "uint8"
+					}
+				],
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"payable": false,
@@ -195,24 +243,6 @@ const ExaminationContractABI = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_medicalCost",
-				"type": "uint256"
-			},
-			{
-				"name": "_signature",
-				"type": "bytes"
-			}
-		],
-		"name": "setMedicalCost",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"name": "_patientData",
@@ -221,6 +251,10 @@ const ExaminationContractABI = [
 			{
 				"name": "_signature",
 				"type": "bytes"
+			},
+			{
+				"name": "_patientPassPhrase",
+				"type": "string"
 			},
 			{
 				"name": "_hospitalAddress",
@@ -239,5 +273,40 @@ const ExaminationContractABI = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "fallback"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "medicalCost",
+				"type": "uint256"
+			}
+		],
+		"name": "SetMedicalCost",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "SignMedicalCost",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "isCompleted",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Payment",
+		"type": "event"
 	}
 ];
