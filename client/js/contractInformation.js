@@ -1,4 +1,4 @@
-const HospitalContractAddress = "0x4aa2d1fbaaa09c790c871017eacbccaa8f5fa7fb"; 
+const HospitalContractAddress = "0xa2d1271db939d7471e3dd38f6156f792d74eed65"; 
 
 const HospitalContractABI = [
 	{
@@ -274,7 +274,13 @@ const ExaminationContractABI = [
 	},
 	{
 		"anonymous": false,
-		"inputs": [],
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "signed",
+				"type": "bool"
+			}
+		],
 		"name": "SignMedicalCost",
 		"type": "event"
 	},
