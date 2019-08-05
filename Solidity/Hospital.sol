@@ -9,8 +9,7 @@ contract Hospital{
     address tokenAddress = 0x0abcd3eE0378B6BB406cFa8Ea4521E7B03b89713; // TestUSD
     
     mapping (address => ExaminationInfo[]) examinationList;
-    // これ後で消す
-    mapping (string => bool) isRegistered;
+
     struct ExaminationInfo{
         string passportNo;
         Examination examinationContract;

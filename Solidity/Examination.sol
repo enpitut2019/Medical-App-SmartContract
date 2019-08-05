@@ -14,10 +14,10 @@ contract Examination is UsingERC20, Library{
     string patientPassPhrase;
     // contractで消費したETH（usedGas*gasPriceの合計）
     uint256 usedETH;
-
+    
     event SetMedicalCost(uint256 medicalCost);
-    event SignMedicalCost();
-    event Payment(bool isCompleted, uint256 amount);
+    event SignMedicalCost(bool signed);
+    event Payment(bool isCompleted, uint256 unpaidCost);
     
     /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトを初期化
       * @param _patientData 患者データを暗号化した物
@@ -55,11 +55,12 @@ contract Examination is UsingERC20, Library{
       * @return uint256 デポジット金額
       * @return uint256 登録された医療費
       * @return uint256 未収金金額
+      * @return bool 署名済みか？
       * @return uint256 contractで消費したETH
       * @return TokenData 使用するERC20Tokenの情報
       */
-    function getContractData() public view returns(address, string memory, string memory, uint256, uint256, uint256, uint256, TokenData memory){
-        return (patientAddress, patientData, patientPassPhrase, ERC20Token.balanceOf(address(this)), medicalCost, unpaidCost, usedETH, getTokenData());
+    function getContractData() public view returns(address, string memory, string memory, uint256, uint256, uint256, bool, uint256, TokenData memory){
+        return (patientAddress, patientData, patientPassPhrase, ERC20Token.balanceOf(address(this)), medicalCost, unpaidCost, signCompleted, usedETH, getTokenData());
     }
     
     /** @dev フォールバック関数(送金を受け付ける）
@@ -74,7 +75,6 @@ contract Examination is UsingERC20, Library{
     function setMedicalCost(uint256 _medicalCost) public onlyOwner countUsedETH{
         require(signCompleted == false);
         medicalCost = _medicalCost;
-        unpaidCost = _medicalCost;
         emit SetMedicalCost(medicalCost);
     }
     
@@ -83,13 +83,13 @@ contract Examination is UsingERC20, Library{
       */
     function signMedicalCost(bytes memory _signature) public onlyOwner countUsedETH{
         require(signCompleted == false);
+        /* これはいらない */
+        require(medicalCost != 0);
         // 署名が患者によって行われているか
-        string memory message = uintToString(medicalCost);
-        require(recoverAddress(message, _signature) == patientAddress);
+        require(recoverAddress(uintToString(medicalCost), _signature) == patientAddress);
+        unpaidCost = medicalCost;
         signCompleted = true;
-        emit SignMedicalCost();
-        // 返金の処理などを書く
-        withDraw();
+        emit SignMedicalCost(true);
     }
     
     /** @dev 明細登録後の医療費の引き出し
@@ -119,11 +119,5 @@ contract Examination is UsingERC20, Library{
     function refund() public onlyOwner countUsedETH{
         uint256 tokenBalance = ERC20Token.balanceOf(address(this));
         ERC20Token.transfer(patientAddress, tokenBalance);
-    }
-    
-    /** @dev コントラクトに保存された患者アドレスが、正しいかチェックする
-     */
-    function validatePatientAddress() public view returns (bool){
-        return patientAddress == msg.sender;
     }
 }

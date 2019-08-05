@@ -13,6 +13,7 @@ contract Library{
     }
     
     function uintToString(uint256 v) internal pure returns (string memory) {
+        if(v == 0) return "0";
         uint maxlength = 100;
         bytes memory reversed = new bytes(maxlength);
         uint256 i = 0;
