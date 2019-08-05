@@ -1,4 +1,4 @@
-const HospitalContractAddress = "0xf1fbe5b307609efad9d86dc1d8b1e1d2fc654a74s"; 
+const HospitalContractAddress = "0x4aa2d1fbaaa09c790c871017eacbccaa8f5fa7fb"; 
 
 const HospitalContractABI = [
 	{
