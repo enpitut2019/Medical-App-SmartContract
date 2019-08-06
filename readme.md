@@ -11,4 +11,8 @@
 - 陳 浩太
 - 高橋 孝輔
 - 西山 大輝
-## デプロイ先URL
+
+## リポジトリ
+スマートコントラクト ここ  
+[患者側クライアント](https://github.com/enpitut2019/Medical-App-Patient-Client)  
+[病院側クライアント](https://github.com/enpitut2019/Medical-App-Hospital-Client)  
