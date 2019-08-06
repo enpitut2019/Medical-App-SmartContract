@@ -14,10 +14,11 @@ contract Examination is UsingERC20, Library{
     string patientPassPhrase;
     // contractで消費したETH（usedGas*gasPriceの合計）
     uint256 usedETH;
-    
+    address public test;
     event SetMedicalCost(uint256 medicalCost);
     event SignMedicalCost(bool signed);
-    event Payment(bool isCompleted, uint256 unpaidCost);
+    event WithDraw(uint256 unpaidCost);
+    event Refund(uint256 amount);
     
     /** @dev 患者から署名付きの患者データを受け取ってスマートコントラクトを初期化
       * @param _patientData 患者データを暗号化した物
@@ -63,7 +64,7 @@ contract Examination is UsingERC20, Library{
         return (patientAddress, patientData, patientPassPhrase, ERC20Token.balanceOf(address(this)), medicalCost, unpaidCost, signCompleted, usedETH, getTokenData());
     }
     
-    /** @dev フォールバック関数(送金を受け付ける）
+    /** @dev フォールバック関数
       */
     function () external{
     }
@@ -104,10 +105,10 @@ contract Examination is UsingERC20, Library{
         }else if(tokenBalance <= unpaidCost){
             ERC20Token.transfer(hospitalAddress, tokenBalance);
             unpaidCost -= tokenBalance; 
-            emit Payment(false, unpaidCost);
+            emit WithDraw(unpaidCost);
         }else{
             ERC20Token.transfer(hospitalAddress, unpaidCost);
-            emit Payment(true, 0);
+            emit WithDraw(0);
             unpaidCost = 0;
             // 余った分は返金
             refund();
@@ -116,8 +117,9 @@ contract Examination is UsingERC20, Library{
     
     /** @dev トークン残高全てを患者へ送金
       */
-    function refund() public onlyOwner countUsedETH{
+    function refund() private onlyOwner countUsedETH{
         uint256 tokenBalance = ERC20Token.balanceOf(address(this));
         ERC20Token.transfer(patientAddress, tokenBalance);
+        emit Refund(tokenBalance);
     }
 }
